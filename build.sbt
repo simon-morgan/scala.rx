@@ -3,12 +3,12 @@ import sbtcrossproject.CrossPlugin.autoImport.{ crossProject, CrossType }
 
 val monocleVersion = "2.0.0-RC1"
 val acyclicVersion = "0.2.0"
-val crossScalaVersionList = Seq("2.11.12", "2.12.9", "2.13.0")
+val crossScalaVersionList = Seq("2.11.12", "2.12.9", "2.13.1")
 
 val sharedSettings = Seq(
   crossScalaVersions := crossScalaVersionList,
   scalaVersion := crossScalaVersionList.last,
-  version := "0.4.0",
+  version := "0.4.0-icx",
   scalacOptions ++=
     "-encoding" :: "UTF-8" ::
     "-unchecked" ::
@@ -58,7 +58,9 @@ lazy val scalarx = crossProject(JSPlatform, JVMPlatform)
   /* scalacOptions += "-Yrangepos", */
 
     // Sonatype
-    publishTo := Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2"),
+    publishTo := Some(
+      "Artifactory Realm" at "http://ec2-54-252-250-124.ap-southeast-2.compute.amazonaws.com:8081/artifactory/sbt-release;build.timestamp=" + new java.util.Date().getTime),
+    credentials in Global += Credentials(Path.userHome / ".sbt" / "artifactory.credentials"),
     pomExtra :=
       <url>https://github.com/lihaoyi/scala.rx</url>
       <licenses>
